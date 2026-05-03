@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aurum Hotel & Residences | Beyond Expectation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400&display=swap');
+
+    :root {
+      --color-obsidian: #080808;
+      --color-charcoal: #141414;
+      --color-liquid-gold: #C9A84C;
+      --color-aged-gold: #9A7B3F;
+      --color-cream: #F5F0E8;
+      --color-stone: #8A8070;
+      
+      --font-display: 'Cormorant Garamond', serif;
+      --font-ui: 'Montserrat', sans-serif;
+      
+      --transition-smooth: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      cursor: none; /* Hide default cursor for custom cursor */
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--color-obsidian);
+      color: var(--color-cream);
+    }
+
+    body {
+      font-family: var(--font-ui);
+      overflow-x: hidden;
+      background-color: var(--color-obsidian);
+      color: var(--color-cream);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* CUSTOM CURSOR */
+    #custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      background-color: var(--color-liquid-gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+    }
+
+    /* LOADER */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background-color: var(--color-obsidian);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: loaderFadeOut 1.5s 1.5s forwards ease-in-out;
+    }
+    #loader h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 5vw, 6rem);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--color-liquid-gold);
+      opacity: 0;
+      animation: loaderTextFade 1.5s forwards ease-in-out;
+    }
+    @keyframes loaderTextFade {
+      0% { opacity: 0; transform: scale(0.95); }
+      50% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.05); }
+    }
+    @keyframes loaderFadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    /* TYPOGRAPHY */
+    .font-display { font-family: var(--font-display); }
+    .font-ui { font-family: var(--font-ui); }
+    
+    .text-stone { color: var(--color-stone); }
+    .text-gold { color: var(--color-liquid-gold); }
+    .text-cream { color: var(--color-cream); }
+
+    /* NAVIGATION */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 30px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      transition: background-color 0.4s ease, backdrop-filter 0.4s ease, border-bottom 0.4s ease, padding 0.4s ease;
+    }
+    #navbar.scrolled {
+      background-color: rgba(8, 8, 8, 0.95);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.13); /* #C9A84C22 */
+      padding: 15px 5%;
+    }
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .brand-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 24px;
+      letter-spacing: 0.1em;
+      color: var(--color-cream);
+    }
+    .brand-tag {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 9px;
+      letter-spacing: 0.35em;
+      color: var(--color-stone);
+      margin-top: 2px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
+    .nav-link {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      position: relative;
+      padding-bottom: 4px;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: var(--color-liquid-gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform;
+    }
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+    .btn-book {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-liquid-gold);
+      border: 1px solid var(--color-liquid-gold);
+      padding: 12px 24px;
+      background: transparent;
+      transition: var(--transition-smooth);
+    }
+    .btn-book:hover {
+      background-color: var(--color-liquid-gold);
+      color: var(--color-obsidian);
+    }
+
+    /* HERO SECTION */
+    #hero {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #1a150c 0%, var(--color-obsidian) 70%);
+    }
+    /* SVG Architecture Line Art Overlay */
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 100 L100 0 M25 100 L100 25 M0 75 L75 0 M50 100 L100 50 M0 50 L50 0 M75 100 L100 75 M0 25 L25 0' stroke='%23C9A84C' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+    }
+    /* Floating Gold Dust */
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background-color: var(--color-liquid-gold);
+      border-radius: 50%;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    @keyframes particleDrift {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      20% { opacity: 0.8; }
+      80% { opacity: 0.5; }
+      100% { transform: translateY(-200px) scale(0.5); opacity: 0; }
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(80px, 14vw, 220px);
+      line-height: 0.9;
+      margin: 0;
+    }
+    .hero-headline .line-1 {
+      display: block;
+      color: var(--color-cream);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s 1.8s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .hero-headline .line-2 {
+      display: block;
+      font-style: italic;
+      color: var(--color-liquid-gold);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s 2.2s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .hero-tagline {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-stone);
+      margin-top: 40px;
+      opacity: 0;
+      animation: fadeUp 1s 2.6s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Booking Bar */
+    .booking-bar {
+      position: absolute;
+      bottom: 60px;
+      left: 5%;
+      right: 5%;
+      background: rgba(8, 8, 8, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 4px solid var(--color-liquid-gold);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      opacity: 0;
+      animation: fadeUp 1s 3s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 20;
+    }
+    @media (max-width: 640px) {
+      .booking-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+        padding: 20px;
+        bottom: 20px;
+      }
+    }
+    .booking-input-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      margin-right: 20px;
+    }
+    @media (max-width: 640px) {
+      .booking-input-group { margin-right: 0; }
+    }
+    .booking-label {
+      font-family: var(--font-ui);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-stone);
+      margin-bottom: 8px;
+    }
+    .booking-input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      color: var(--color-cream);
+      font-family: var(--font-display);
+      font-size: 24px;
+      padding: 5px 0;
+      outline: none;
+      transition: border-color 0.3s ease;
+      /* Remove calendar icon */
+      color-scheme: dark;
+    }
+    .booking-input:focus {
+      border-bottom-color: var(--color-liquid-gold);
+    }
+    
+    /* Scroll Indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: fadeUp 1s 3.2s forwards, bounce 2s infinite 4s;
+    }
+    .scroll-text {
+      font-family: var(--font-ui);
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--color-stone);
+    }
+    .scroll-chevron {
+      width: 12px;
+      height: 12px;
+      border-right: 1px solid var(--color-stone);
+      border-bottom: 1px solid var(--color-stone);
+      transform: rotate(45deg);
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+      40% { transform: translate(-50%, -10px); }
+      60% { transform: translate(-50%, -5px); }
+    }
+
+    /* GLOBAL SECTIONS */
+    .section {
+      padding: 150px 5%;
+      position: relative;
+    }
+    .section-label {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 9px;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--color-liquid-gold);
+      margin-bottom: 20px;
+      display: block;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(48px, 6vw, 72px);
+      color: var(--color-cream);
+      margin-bottom: 80px;
+    }
+
+    /* ACCOMMODATIONS */
+    #accommodations {
+      background-color: var(--color-charcoal);
+    }
+    .suites-grid {
+      display: grid;
+      grid-template-columns: 55% 1fr;
+      gap: 30px;
+    }
+    @media (max-width: 1024px) {
+      .suites-grid { grid-template-columns: 1fr; }
+    }
+    .suite-col-right {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    .suite-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid transparent;
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 40px;
+      will-change: transform;
+    }
+    .suite-card.large {
+      height: 800px;
+    }
+    .suite-card.small {
+      height: calc(400px - 15px);
+    }
+    @media (max-width: 1024px) {
+      .suite-card.large, .suite-card.small { height: 500px; }
+    }
+    .suite-card:hover {
+      transform: scale(1.02);
+      border-color: var(--color-liquid-gold);
+    }
+    .suite-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    /* Unique CSS Gradients for Suites */
+    .suite-1-bg { background: linear-gradient(135deg, #0b1d22 0%, var(--color-charcoal) 100%); }
+    .suite-2-bg { background: linear-gradient(135deg, #2a0a12 0%, var(--color-obsidian) 100%); }
+    .suite-3-bg { background: linear-gradient(135deg, #0a1128 0%, #291e0a 100%); }
+    
+    /* Shimmer Overlay */
+    .shimmer {
+      position: absolute;
+      inset: -100%;
+      background: linear-gradient(to bottom right, rgba(255,255,255,0) 40%, rgba(201,168,76,0.05) 50%, rgba(255,255,255,0) 60%);
+      animation: shimmerSweep 4s infinite linear;
+      pointer-events: none;
+    }
+    @keyframes shimmerSweep {
+      0% { transform: translate(-50%, -50%); }
+      100% { transform: translate(50%, 50%); }
+    }
+    
+    .suite-content {
+      position: relative;
+      z-index: 10;
+    }
+    .suite-name {
+      font-family: var(--font-display);
+      font-size: 36px;
+      color: var(--color-cream);
+      margin-bottom: 10px;
+      transition: var(--transition-smooth);
+    }
+    .suite-card:hover .suite-name {
+      transform: translateY(-8px);
+    }
+    .suite-price {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 24px;
+      color: var(--color-liquid-gold);
+      margin-bottom: 20px;
+    }
+    .suite-stats {
+      display: flex;
+      gap: 20px;
+    }
+    .suite-stat {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-stone);
+      border: 1px solid rgba(138, 128, 112, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .suite-reserve {
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: var(--transition-smooth);
+    }
+    .suite-card:hover .suite-reserve {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* DINING SECTION */
+    #dining {
+      background-color: #1a1714; /* deep warm charcoal */
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    /* SVG Arch Background */
+    .arch-bg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80vw;
+      height: 120vh;
+      opacity: 0.06;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #dining .container {
+      position: relative;
+      z-index: 10;
+    }
+    .dining-headline {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(60px, 8vw, 96px);
+      color: var(--color-cream);
+      margin-bottom: 40px;
+    }
+    .gold-rule {
+      width: 80px;
+      height: 1px;
+      background-color: var(--color-liquid-gold);
+      margin: 0 auto 80px auto;
+    }
+    .dining-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    @media (max-width: 768px) {
+      .dining-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 40px;
+      }
+      .dining-card {
+        flex: 0 0 85vw;
+        scroll-snap-align: center;
+      }
+    }
+    .dining-card {
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: var(--transition-smooth);
+    }
+    .dining-card:hover {
+      border-color: rgba(201,168,76,0.3);
+      transform: translateY(-5px);
+    }
+    .dining-1 { background: radial-gradient(circle at top, #261f1a 0%, #110e0c 100%); }
+    .dining-2 { background: radial-gradient(circle at top, #1a2226 0%, #0c1011 100%); }
+    .dining-3 { background: radial-gradient(circle at top, #261a1a 0%, #110c0c 100%); }
+    
+    .dining-icon {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 30px;
+      fill: none;
+      stroke: var(--color-liquid-gold);
+      stroke-width: 1;
+    }
+    .dining-name {
+      font-family: var(--font-display);
+      font-size: 32px;
+      color: var(--color-cream);
+      margin-bottom: 15px;
+    }
+    .dining-desc {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 13px;
+      color: var(--color-stone);
+      line-height: 1.6;
+    }
+
+    /* SPA SECTION */
+    #spa {
+      background-color: var(--color-obsidian);
+      position: relative;
+      overflow: hidden;
+    }
+    .spa-pulse-bg {
+      position: absolute;
+      inset: -20%;
+      background: radial-gradient(circle at center, rgba(154,123,63,0.1) 0%, var(--color-obsidian) 50%);
+      animation: breathe 6s ease-in-out infinite alternate;
+      z-index: 0;
+    }
+    @keyframes breathe {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+    .spa-container {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+    .spa-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 80px;
+    }
+    @media (max-width: 768px) {
+      .spa-grid { grid-template-columns: 1fr; }
+    }
+    .spa-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 60px 40px;
+      transition: var(--transition-smooth);
+    }
+    .spa-card:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(201,168,76,0.5);
+    }
+
+    /* EXPERIENCES SECTION */
+    #experiences {
+      background-color: var(--color-charcoal);
+      padding: 100px 0;
+      overflow: hidden;
+    }
+    .marquee-container {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 40px 0;
+      border-y: 1px solid rgba(201,168,76,0.1);
+      margin-bottom: 100px;
+    }
+    .marquee-content {
+      display: inline-block;
+      animation: marquee 30s linear infinite;
+    }
+    .marquee-content span {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-style: italic;
+      color: var(--color-liquid-gold);
+      padding: 0 40px;
+    }
+    .marquee-content .pipe {
+      color: var(--color-stone);
+      font-style: normal;
+      font-weight: 300;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .exp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      padding: 0 5%;
+    }
+    @media (max-width: 768px) {
+      .exp-grid { grid-template-columns: 1fr; }
+    }
+    .exp-card {
+      height: 400px;
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding: 40px;
+    }
+    /* CSS Abstract Art */
+    .exp-1 { background: repeating-linear-gradient(45deg, #0f0f0f, #0f0f0f 10px, #141414 10px, #141414 20px); }
+    .exp-2 { background: radial-gradient(circle at 80% 20%, rgba(201,168,76,0.1) 0%, #141414 50%); }
+    .exp-3 { background: linear-gradient(180deg, #141414 0%, #1a1a1a 100%); box-shadow: inset 0 0 100px rgba(0,0,0,0.8); }
+    .exp-4 { background: conic-gradient(from 90deg at 50% 50%, #141414 0%, #1c1c1c 50%, #141414 100%); }
+    
+    /* SIGN-IN PAGE SECTION */
+    #signin {
+      position: relative;
+      min-height: 100vh;
+      background-color: var(--color-obsidian);
+      display: flex;
+      align-items: center;
+      padding: 0;
+      overflow: hidden;
+    }
+    .signin-container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+    }
+    @media (max-width: 992px) {
+      .signin-container { flex-direction: column; }
+    }
+    .signin-left {
+      flex: 1;
+      padding: 10%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 10;
+    }
+    .signin-quote {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 6vw, 72px);
+      font-style: italic;
+      color: var(--color-cream);
+      line-height: 1.1;
+      margin-bottom: 40px;
+    }
+    .signin-line {
+      width: 80px;
+      height: 2px;
+      background-color: var(--color-liquid-gold);
+      margin-bottom: 60px;
+    }
+    .trust-badges {
+      display: flex;
+      gap: 30px;
+      margin-top: auto;
+    }
+    .badge {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-stone);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .signin-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 10;
+      padding: 5%;
+    }
+    .signin-card {
+      width: 100%;
+      max-width: 480px;
+      background: rgba(201,168,76,0.05);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border: 1px solid rgba(201,168,76,0.3);
+      padding: 60px 50px;
+      opacity: 0;
+      transform: translateY(30px);
+      /* Handled by IntersectionObserver or delay */
+      animation: fadeUp 1s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .signin-card h2 {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 400;
+      color: var(--color-cream);
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 30px;
+    }
+    .form-input {
+      width: 100%;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 15px 20px;
+      font-family: var(--font-ui);
+      font-size: 14px;
+      color: var(--color-cream);
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .form-input:focus {
+      border-color: var(--color-liquid-gold);
+    }
+    .btn-submit {
+      width: 100%;
+      background-color: var(--color-liquid-gold);
+      color: var(--color-obsidian);
+      border: none;
+      padding: 18px;
+      font-family: var(--font-ui);
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: var(--transition-smooth);
+    }
+    .btn-submit:hover {
+      background-color: var(--color-cream);
+    }
+    .signin-footer {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .signin-footer a {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 11px;
+      color: var(--color-stone);
+      transition: color 0.3s;
+    }
+    .signin-footer a:hover {
+      color: var(--color-liquid-gold);
+    }
+
+    /* FOOTER */
+    #footer {
+      background-color: #050505;
+      position: relative;
+      padding-top: 100px;
+      border-top: 1px solid rgba(201,168,76,0.2);
+    }
+    .footer-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 L40 20 L20 40 L0 20 Z' stroke='%23ffffff' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+    }
+    .footer-container {
+      position: relative;
+      z-index: 10;
+      padding: 0 5%;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 50px;
+      margin-bottom: 80px;
+    }
+    @media (max-width: 1024px) {
+      .footer-grid { grid-template-columns: 1fr 1fr 1fr; }
+      .brand-col { grid-column: span 3; margin-bottom: 40px; }
+    }
+    @media (max-width: 640px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .brand-col { grid-column: span 1; }
+    }
+    .footer-col h4 {
+      font-family: var(--font-ui);
+      font-weight: 400;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-stone);
+      margin-bottom: 30px;
+    }
+    .footer-col ul li {
+      margin-bottom: 15px;
+    }
+    .footer-col a {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 13px;
+      color: var(--color-cream);
+      transition: color 0.3s;
+    }
+    .footer-col a:hover {
+      color: var(--color-liquid-gold);
+    }
+    .brand-col p {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 13px;
+      color: var(--color-stone);
+      margin: 20px 0;
+      line-height: 1.8;
+    }
+    .stars {
+      display: flex;
+      gap: 5px;
+    }
+    .star-svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--color-liquid-gold);
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 30px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    @media (max-width: 640px) {
+      .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
+    }
+    .footer-bottom p {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--color-stone);
+      text-transform: uppercase;
+    }
+
+    /* PREFERS REDUCED MOTION */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE LOADER -->
+  <div id="loader">
+    <h1>AURUM</h1>
+  </div>
+
+  <!-- CUSTOM CURSOR -->
+  <div id="custom-cursor"></div>
+
+  <!-- NAVIGATION -->
+  <nav id="navbar">
+    <div class="brand">
+      <div class="brand-name">AURUM</div>
+      <div class="brand-tag">HOTEL & RESIDENCES</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#accommodations" class="nav-link">Suites</a></li>
+      <li><a href="#dining" class="nav-link">Dining</a></li>
+      <li><a href="#spa" class="nav-link">Spa</a></li>
+      <li><a href="#experiences" class="nav-link">Experiences</a></li>
+      <li><a href="#signin" class="nav-link" id="nav-signin">Guest Portal</a></li>
+    </ul>
+    <a href="#accommodations" class="btn-book">Book Now</a>
+  </nav>
+
+  <!-- MAIN WRAPPER FOR SINGLE PAGE ROUTING SIMULATION -->
+  <main id="main-content">
+    
+    <!-- HERO SECTION -->
+    <header id="hero">
+      <div class="hero-pattern"></div>
+      <!-- Particles Container -->
+      <div id="particles"></div>
+      
+      <div class="hero-content">
+        <h1 class="hero-headline">
+          <span class="line-1">Beyond</span>
+          <span class="line-2">Expectation.</span>
+        </h1>
+        <p class="hero-tagline">The art of invisible service</p>
+      </div>
+
+      <!-- Booking Bar -->
+      <div class="booking-bar">
+        <div class="booking-input-group">
+          <span class="booking-label">Check-in</span>
+          <input type="date" class="booking-input" value="2026-06-01">
+        </div>
+        <div class="booking-input-group">
+          <span class="booking-label">Check-out</span>
+          <input type="date" class="booking-input" value="2026-06-05">
+        </div>
+        <div class="booking-input-group">
+          <span class="booking-label">Guests</span>
+          <select class="booking-input">
+            <option>2 Adults</option>
+            <option>1 Adult</option>
+            <option>3 Adults</option>
+          </select>
+        </div>
+        <a href="#accommodations" class="btn-book" style="border-color:var(--color-obsidian); color:var(--color-obsidian); background:var(--color-liquid-gold);">Check Availability</a>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator">
+        <div class="scroll-chevron"></div>
+        <div class="scroll-text">Scroll to discover</div>
+      </div>
+    </header>
+
+    <!-- ACCOMMODATIONS -->
+    <section id="accommodations" class="section">
+      <span class="section-label">— 01 / ACCOMMODATIONS —</span>
+      <h2 class="section-title">Signature Suites</h2>
+      
+      <div class="suites-grid">
+        <!-- Left Large Card -->
+        <div class="suite-card large">
+          <div class="suite-bg suite-1-bg"></div>
+          <div class="shimmer"></div>
+          <div class="suite-content">
+            <h3 class="suite-name">Deluxe Room</h3>
+            <p class="suite-price">$450 / night</p>
+            <div class="suite-stats">
+              <span class="suite-stat">45 m²</span>
+              <span class="suite-stat">2 Guests</span>
+            </div>
+            <a href="#signin" class="btn-book suite-reserve">Reserve</a>
+          </div>
+        </div>
+        
+        <!-- Right Column (Stacked) -->
+        <div class="suite-col-right">
+          <div class="suite-card small">
+            <div class="suite-bg suite-2-bg"></div>
+            <div class="shimmer" style="animation-delay: 1s;"></div>
+            <div class="suite-content">
+              <h3 class="suite-name">Grand Suite</h3>
+              <p class="suite-price">$950 / night</p>
+              <div class="suite-stats">
+                <span class="suite-stat">120 m²</span>
+                <span class="suite-stat">4 Guests</span>
+              </div>
+              <a href="#signin" class="btn-book suite-reserve">Reserve</a>
+            </div>
+          </div>
+          
+          <div class="suite-card small">
+            <div class="suite-bg suite-3-bg"></div>
+            <div class="shimmer" style="animation-delay: 2.5s;"></div>
+            <div class="suite-content">
+              <h3 class="suite-name">The Penthouse</h3>
+              <p class="suite-price">$2,800 / night</p>
+              <div class="suite-stats">
+                <span class="suite-stat">320 m²</span>
+                <span class="suite-stat">6 Guests</span>
+              </div>
+              <a href="#signin" class="btn-book suite-reserve">Reserve</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DINING -->
+    <section id="dining" class="section">
+      <svg class="arch-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path d="M10,100 V40 A40,40 0 0,1 90,40 V100" fill="none" stroke="#C9A84C" stroke-width="0.5"/>
+      </svg>
+      
+      <div class="container">
+        <span class="section-label">— 02 / CULINARY —</span>
+        <h2 class="dining-headline">Private Dining</h2>
+        <div class="gold-rule"></div>
+        
+        <div class="dining-grid">
+          <div class="dining-card dining-1">
+            <svg class="dining-icon" viewBox="0 0 24 24"><path d="M6 3v8c0 1.5 1 2.8 2.4 3.2V21h3v-6.8c1.4-.4 2.6-1.7 2.6-3.2V3m-4 0v6M7 3v6m6-6v6m3-6v18h3V10c0-3.9-3-7-3-7z"/></svg>
+            <h3 class="dining-name">L'Orangerie</h3>
+            <p class="dining-desc">Two Michelin stars. Avant-garde tasting menus rooted in classical techniques.</p>
+          </div>
+          
+          <div class="dining-card dining-2">
+            <svg class="dining-icon" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-4-8c0 2.2 1.8 4 4 4s4-1.8 4-4-1.8-4-4-4-4 1.8-4 4z"/></svg>
+            <h3 class="dining-name">The Onyx Bar</h3>
+            <p class="dining-desc">Bespoke mixology and rare vintage spirits in a seductive speakeasy atmosphere.</p>
+          </div>
+
+          <div class="dining-card dining-3">
+            <svg class="dining-icon" viewBox="0 0 24 24"><path d="M17 3v2c0 2.8-2.2 5-5 5s-5-2.2-5-5V3M12 10v11m-3 0h6"/></svg>
+            <h3 class="dining-name">In-Suite</h3>
+            <p class="dining-desc">24-hour private dining curated by our executive chef, served in your suite.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPA & WELLNESS -->
+    <section id="spa" class="section">
+      <div class="spa-pulse-bg"></div>
+      
+      <div class="spa-container">
+        <span class="section-label">— 03 / WELLNESS —</span>
+        <h2 class="section-title" style="margin-bottom: 20px;">Sanctuary of Serenity</h2>
+        <p class="text-stone" style="font-size:14px; max-width:500px; margin:0 auto;">Restore balance in our subterranean oasis featuring ancient thermal traditions and bespoke holistic therapies.</p>
+        
+        <div class="spa-grid">
+          <div class="spa-card">
+            <svg class="dining-icon" style="margin: 0 auto 30px auto;" viewBox="0 0 24 24"><path d="M12 22C6.5 22 2 17.5 2 12S6.5 2 12 2s10 4.5 10 10-4.5 10-10 10zm0-18c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 14c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6zm0-10c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/></svg>
+            <h3 class="dining-name" style="font-size:24px;">Holistic Healing</h3>
+            <p class="dining-desc">Custom treatments tailored to align your physical and energetic pathways.</p>
+          </div>
+          <div class="spa-card">
+            <svg class="dining-icon" style="margin: 0 auto 30px auto;" viewBox="0 0 24 24"><path d="M2 12c2.2 0 4-1.8 4-4s1.8-4 4-4 4 1.8 4 4 1.8 4 4 4M2 18c2.2 0 4-1.8 4-4s1.8-4 4-4 4 1.8 4 4 1.8 4 4 4"/></svg>
+            <h3 class="dining-name" style="font-size:24px;">Thermal Pools</h3>
+            <p class="dining-desc">A circuit of vitality pools, ice fountains, and eucalyptus steam rooms.</p>
+          </div>
+          <div class="spa-card">
+            <svg class="dining-icon" style="margin: 0 auto 30px auto;" viewBox="0 0 24 24"><path d="M12 12c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm0 2c-4.4 0-8 3.6-8 8h16c0-4.4-3.6-8-8-8z"/></svg>
+            <h3 class="dining-name" style="font-size:24px;">Expert Therapists</h3>
+            <p class="dining-desc">Masters of their craft, delivering transformative physical rejuvenation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCES -->
+    <section id="experiences">
+      <div class="marquee-container">
+        <div class="marquee-content">
+          <span>Private City Tours</span><i class="pipe">|</i>
+          <span>Rooftop Dining</span><i class="pipe">|</i>
+          <span>Bespoke Concierge</span><i class="pipe">|</i>
+          <span>Helipad Transfers</span><i class="pipe">|</i>
+          <span>Art Collection</span><i class="pipe">|</i>
+          <span>In-Suite Sommelier</span><i class="pipe">|</i>
+          <!-- Repeat for infinite scroll effect -->
+          <span>Private City Tours</span><i class="pipe">|</i>
+          <span>Rooftop Dining</span><i class="pipe">|</i>
+          <span>Bespoke Concierge</span><i class="pipe">|</i>
+          <span>Helipad Transfers</span><i class="pipe">|</i>
+          <span>Art Collection</span><i class="pipe">|</i>
+          <span>In-Suite Sommelier</span><i class="pipe">|</i>
+        </div>
+      </div>
+      
+      <div class="exp-grid">
+        <div class="exp-card exp-1">
+          <h3 class="dining-name">Urban Escapes</h3>
+        </div>
+        <div class="exp-card exp-2">
+          <h3 class="dining-name">Aviation</h3>
+        </div>
+        <div class="exp-card exp-3">
+          <h3 class="dining-name">Curated Arts</h3>
+        </div>
+        <div class="exp-card exp-4">
+          <h3 class="dining-name">Sommelier Selection</h3>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SIGN IN PAGE (Hidden initially, accessible via routing simulation) -->
+  <section id="signin" style="display: none;">
+    <!-- Same particle background as hero -->
+    <div id="signin-particles"></div>
+    
+    <div class="signin-container">
+      <div class="signin-left">
+        <div class="signin-line"></div>
+        <h1 class="signin-quote">The art of<br>invisible service.</h1>
+        <div class="brand-name" style="margin-bottom: 40px; font-size: 18px;">AURUM</div>
+        
+        <div class="trust-badges">
+          <div class="badge">
+            <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3-6.2 3.3 1.2-6.8-5-4.9 6.9-1L12 2z"/></svg>
+            5-Star Excellence
+          </div>
+          <div class="badge">
+            <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3-6.2 3.3 1.2-6.8-5-4.9 6.9-1L12 2z"/></svg>
+            Forbes Travel
+          </div>
+          <div class="badge">
+            <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3-6.2 3.3 1.2-6.8-5-4.9 6.9-1L12 2z"/></svg>
+            Condé Nast
+          </div>
+        </div>
+      </div>
+      
+      <div class="signin-right">
+        <div class="signin-card" id="signin-card-anim">
+          <h2>Welcome Back</h2>
+          <form onsubmit="event.preventDefault();">
+            <div class="form-group">
+              <label class="booking-label">Email Address</label>
+              <input type="email" class="form-input" placeholder="guest@example.com" required>
+            </div>
+            <button type="submit" class="btn-submit">Send Magic Link</button>
+          </form>
+          <div class="signin-footer">
+            <a href="#" id="back-to-home">New guest? Return Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="footer-pattern"></div>
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="brand-col">
+          <div class="brand-name" style="font-size:28px;">AURUM</div>
+          <div class="brand-tag">HOTEL & RESIDENCES</div>
+          <p>123 Grand Avenue<br>New York, NY 10001<br><br>+1 800 555 0100</p>
+          <div class="stars">
+            <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3-6.2 3.3 1.2-6.8-5-4.9 6.9-1L12 2z"/></svg>
+            <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3-6.2 3.3 1.2-6.8-5-4.9 6.9-1L12 2z"/></svg>
+            <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3-6.2 3.3 1.2-6.8-5-4.9 6.9-1L12 2z"/></svg>
+            <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3-6.2 3.3 1.2-6.8-5-4.9 6.9-1L12 2z"/></svg>
+            <svg class="star-svg" viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3-6.2 3.3 1.2-6.8-5-4.9 6.9-1L12 2z"/></svg>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#accommodations">Suites</a></li>
+            <li><a href="#dining">Dining</a></li>
+            <li><a href="#spa">Spa & Wellness</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#">Concierge</a></li>
+            <li><a href="#">Events</a></li>
+            <li><a href="#">Transfers</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 Aurum Hotel & Residences. All rights reserved.</p>
+        <p>Crafted with precision. Built for permanence.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      // 1. Custom Cursor
+      const cursor = document.getElementById('custom-cursor');
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let cursorX = mouseX;
+      let cursorY = mouseY;
+      
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function renderCursor() {
+        // Linear interpolation for smooth lag
+        cursorX += (mouseX - cursorX) * 0.2;
+        cursorY += (mouseY - cursorY) * 0.2;
+        cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+        requestAnimationFrame(renderCursor);
+      }
+      renderCursor();
+
+      // Ensure cursor is hidden on touch devices
+      if (window.matchMedia("(pointer: coarse)").matches) {
+        cursor.style.display = "none";
+      }
+
+      // 2. Navbar Scroll Transparency
+      const navbar = document.getElementById('navbar');
+      let isScrolled = false;
+      
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 80 && !isScrolled) {
+          navbar.classList.add('scrolled');
+          isScrolled = true;
+        } else if (window.scrollY <= 80 && isScrolled) {
+          navbar.classList.remove('scrolled');
+          isScrolled = false;
+        }
+      }, { passive: true });
+
+      // 3. Generate Floating Gold Particles
+      function createParticles(containerId, count) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        for (let i = 0; i < count; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random properties
+          const left = Math.random() * 100;
+          const size = Math.random() * 3 + 1;
+          const duration = Math.random() * 10 + 10;
+          const delay = Math.random() * 10;
+          
+          particle.style.left = `${left}%`;
+          particle.style.bottom = '-10px';
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          particle.style.animation = `particleDrift ${duration}s ${delay}s infinite linear`;
+          
+          container.appendChild(particle);
+        }
+      }
+      
+      createParticles('particles', 15);
+      createParticles('signin-particles', 15);
+
+      // 4. Simple Routing Simulation (Home vs Sign In)
+      const mainContent = document.getElementById('main-content');
+      const signinSection = document.getElementById('signin');
+      const heroSection = document.getElementById('hero');
+      const footer = document.getElementById('footer');
+      
+      const navSigninBtn = document.getElementById('nav-signin');
+      const backToHomeBtn = document.getElementById('back-to-home');
+
+      navSigninBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        mainContent.style.display = 'none';
+        footer.style.display = 'none';
+        navbar.style.display = 'none';
+        signinSection.style.display = 'flex';
+        
+        // Reset animation
+        const card = document.getElementById('signin-card-anim');
+        card.style.animation = 'none';
+        card.offsetHeight; // trigger reflow
+        card.style.animation = null; 
+      });
+
+      backToHomeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        mainContent.style.display = 'block';
+        footer.style.display = 'block';
+        navbar.style.display = 'flex';
+        signinSection.style.display = 'none';
+        window.scrollTo(0,0);
+      });
+    });
+  </script>
+</body>
+</html>
