@@ -1,5 +1,5 @@
 {
-  "name": "aurum-hotel-temp",
+  "name": "aurum-hotel-os",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,9 +9,30 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@stripe/react-stripe-js": "^6.3.0",
+    "@stripe/stripe-js": "^9.4.0",
+    "@supabase/ssr": "^0.10.2",
+    "@supabase/supabase-js": "^2.105.1",
+    "@tanstack/react-query": "^5.100.7",
+    "@trpc/client": "^11.17.0",
+    "@trpc/next": "^11.17.0",
+    "@trpc/react-query": "^11.17.0",
+    "@trpc/server": "^11.17.0",
+    "@upstash/redis": "^1.37.0",
+    "date-fns": "^4.1.0",
+    "decimal.js": "^10.6.0",
+    "framer-motion": "^12.38.0",
+    "nanoid": "^5.1.11",
     "next": "16.2.4",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "react-hook-form": "^7.74.0",
+    "resend": "^6.12.2",
+    "stripe": "^22.1.0",
+    "superjson": "^2.2.6",
+    "zod": "^4.4.2",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
