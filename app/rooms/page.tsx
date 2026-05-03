@@ -1,14 +1,40 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Navbar } from "@/components/ui/navbar";
 import { Footer } from "@/components/ui/footer";
 import { createServiceClient } from "@/lib/supabase";
 import { computeNightlyRate } from "@/lib/pricing";
+import { FadeUp } from "@/components/ui/fade-up";
+
+const ROOM_IMAGES: Record<string, { src: string; alt: string }> = {
+  "deluxe-room": {
+    src: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1200&auto=format&fit=crop",
+    alt: "Heritage Room — mahogany paneling and copper soaking tub",
+  },
+  "grand-suite": {
+    src: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1200&auto=format&fit=crop",
+    alt: "Astor Suite — parlor with antique tapestries and private library",
+  },
+  penthouse: {
+    src: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=1200&auto=format&fit=crop",
+    alt: "Royal Enclave — vaulted ceilings and private conservatory",
+  },
+};
+
+const FALLBACK_IMAGES = [
+  { src: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1200&auto=format&fit=crop", alt: "Luxury hotel room" },
+  { src: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1200&auto=format&fit=crop", alt: "Luxury hotel suite" },
+  { src: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=1200&auto=format&fit=crop", alt: "Luxury hotel penthouse" },
+];
 
 export const metadata: Metadata = {
   title: "Rooms & Suites | Aurum Hotel",
   description: "Explore our luxurious collection of rooms and suites.",
 };
+
+// ISR: revalidate once per hour; purge on-demand via revalidateTag("room-categories")
+export const revalidate = 3600;
 
 export default async function RoomsPage(props: {
   searchParams: Promise<{ checkIn?: string; checkOut?: string; guests?: string }>;
@@ -62,30 +88,30 @@ export default async function RoomsPage(props: {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayCategories.map((cat) => (
-              <article key={cat.id} className="card group cursor-pointer flex flex-col">
-                <div
-                  className="relative h-64 overflow-hidden"
-                  style={{
-                    background: "linear-gradient(135deg, #2a2016 0%, #1a1a1a 100%)",
-                  }}
-                >
-                  <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                    <span className="text-9xl font-display text-gold font-light">A</span>
-                  </div>
-                  
-                  {cat.scarcity_badge && (
-                    <div className="absolute top-3 left-3">
-                      <span className="badge badge-scarcity">Only {cat.available_count} Left</span>
+            {displayCategories.map((cat, idx) => {
+              const img = ROOM_IMAGES[cat.slug] ?? FALLBACK_IMAGES[idx % FALLBACK_IMAGES.length];
+              return (
+              <FadeUp key={cat.id} delay={idx * 0.08}>
+                <article className="card group cursor-pointer flex flex-col h-full">
+                  <div className="relative h-64 overflow-hidden">
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover sepia-[0.3] transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    {cat.scarcity_badge && (
+                      <div className="absolute top-3 left-3 z-10">
+                        <span className="badge badge-scarcity">Only {cat.available_count} Left</span>
+                      </div>
+                    )}
+                    <div className="absolute bottom-3 right-3 z-10">
+                      <span className="badge badge-gold text-xs">
+                        From ${parseFloat(cat.from_price).toLocaleString()}/night
+                      </span>
                     </div>
-                  )}
-
-                  <div className="absolute bottom-3 right-3">
-                    <span className="badge badge-gold text-xs">
-                      From ${parseFloat(cat.from_price).toLocaleString()}/night
-                    </span>
                   </div>
-                </div>
 
                 <div className="p-6 flex flex-col flex-1">
                   <div className="flex items-start justify-between mb-2">
@@ -110,9 +136,11 @@ export default async function RoomsPage(props: {
                       View Details
                     </Link>
                   </div>
-                </div>
-              </article>
-            ))}
+                  </div>
+                </article>
+              </FadeUp>
+            );
+            })}
           </div>
 
           {displayCategories.length === 0 && (
